@@ -117,8 +117,8 @@ class AutoOptimizerSwitcher:
         """
 
         class SchedulerWrapper:
-            def __init__(self):
-                self.schedulers = [
+            def __init__(inner_self):
+                inner_self.schedulers = [
                     get_cosine_schedule_with_warmup(
                         optimizer=optimizer,
                         num_warmup_steps=warmup_steps,

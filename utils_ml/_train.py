@@ -5,8 +5,10 @@ import torch.utils.data as data
 from typing import Any, Tuple
 from rich.progress import Progress
 from tqdm import tqdm
-from optimizer import AutoOptimizerSwitcher
-# from utils import int_length
+from .optimizer import AutoOptimizerSwitcher
+
+
+from rich import print
 
 
 def int_length(n: int) -> int:
@@ -36,7 +38,10 @@ def train(
     train_loss = 0
 
     for inputs, targets in progress_bar:
-        inputs, targets = inputs.to(device), targets.to(device)
+        targets = torch.stack(targets, dim=1).float().to(device)
+        inputs = inputs.to(device)
+        # print(inputs, targets)
+
         optimizer.zero_grad()
         outputs = model(inputs)
         loss = criterion(outputs, targets)
