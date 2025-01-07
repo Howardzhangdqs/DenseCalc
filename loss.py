@@ -10,9 +10,5 @@ class Loss(nn.Module):
 
     def forward(self, pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
         target = target[:, :2].float().to(pred.device) + torch.rand((target.size(0), 2), device=self.device) * 1e-3
-        # print("Pred shape:", pred.shape)
-        # print("Target shape:", target.shape)
-        # print("Pred values:", pred)
-        # print("Target values:", target)
         loss = F.binary_cross_entropy(F.sigmoid(pred), F.sigmoid(target))
         return loss
