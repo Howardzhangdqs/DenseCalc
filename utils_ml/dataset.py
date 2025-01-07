@@ -21,6 +21,23 @@ train_dataset_path = path.join(dataset_path, 'train_data')
 test_dataset_path = path.join(dataset_path, 'test_data')
 
 
+def size_to_embedding(size: int) -> int:
+    if size == 16:
+        return 0
+    elif size == 32:
+        return 1
+    elif size == 64:
+        return 2
+    elif size == 128:
+        return 3
+    elif size == 256:
+        return 4
+    elif size == 512:
+        return 5
+    elif size == 1024:
+        return 6
+
+
 class DenseCalcDataset(Dataset):
     def __init__(self, train=True, transform=None, N=None):
         self.transform = config.transform() if transform is None else transform
@@ -35,20 +52,25 @@ class DenseCalcDataset(Dataset):
 
         note = utils.decode_dict(note)
 
+        embedding = size_to_embedding(note[1])
+
         if self.N is not None:
             note = [
                 1 if note[0] > self.N else 0,
                 0 if note[0] > self.N else 1,
-                note[1],
             ]
         else:
             note = [
                 note[0],
                 0,
-                note[1],
             ]
 
-        return self.transform(mat), note
+        mat = self.transform(mat)
+
+        # embedding 与 mat 相加
+        mat = mat + embedding
+
+        return mat, note
 
 
 if __name__ == '__main__':
