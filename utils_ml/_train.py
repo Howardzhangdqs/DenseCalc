@@ -47,12 +47,13 @@ def train(
         loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()
-        if scheduler is not None:
-            scheduler.step()
         progress_bar.set_postfix(loss=f"{loss.item():.5f}", lr=f"{optimizer.param_groups[0]['lr']:.5f}")
 
         train_loss += loss.item()
     progress_bar.close()
+
+    if scheduler is not None:
+        scheduler.step()
 
     if "update_loss" in dir(optimizer):
         optimizer.update_loss(loss.item())
