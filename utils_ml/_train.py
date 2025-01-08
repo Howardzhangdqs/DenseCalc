@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 import torch.utils.data as data
 from typing import Any, Tuple
@@ -53,6 +54,8 @@ def train(
 
         if scheduler is not None:
             scheduler.step()
+
+        # break
     progress_bar.close()
 
     # if scheduler is not None:
@@ -62,6 +65,8 @@ def train(
         optimizer.update_loss(loss.item())
 
     print(f"Loss: {train_loss / len(train_loader)}")
+
+    return train_loss / len(train_loader)
 
 
 def validate(
@@ -80,17 +85,36 @@ def validate(
     )
 
     val_loss = 0
+    acc = 0
+    total = 0
 
     for inputs, targets in progress_bar:
-        inputs, targets = inputs.to(device), targets.to(device)
+        targets = torch.stack(targets, dim=1).float().to(device)
+        inputs = inputs.to(device)
         outputs = model(inputs)
         loss = criterion(outputs, targets)
         progress_bar.set_postfix(loss=f"{loss.item():.5f}")
 
         val_loss += loss.item()
+
+        # 将outputs最大值的索引设为1，其余为0
+        # print(outputs[:4], targets[:4])
+        outputs = outputs.argmax(dim=1)
+        targets = targets.argmax(dim=1)
+
+        # print(outputs[:4], targets[:4])
+
+        # if outputs.eq(targets).sum() == len(targets):
+        #     acc +=
+
+        acc += outputs.eq(targets).sum().item()
+        total += len(targets)
+
     progress_bar.close()
 
-    print(f"Loss: {val_loss / len(val_loader)}")
+    print(f"Loss: {val_loss / len(val_loader)}, Acc: {acc / total * 100:.2f}%")
+
+    return val_loss / len(val_loader), acc / total
 
 
 if __name__ == "__main__":
