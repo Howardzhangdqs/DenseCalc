@@ -80,10 +80,10 @@ for dataset_name in datasets:
 
     file_index = list_files(dataset_path)
 
-    image_fs = utils.ImageFS(output_path, compress=False)
+    image_fs = utils.ImageFS(output_path, compress=False, images_per_batch=1)
 
     for size_index, (size_name, size) in enumerate(IMG_CROP_SIZES):
-        retention_probability = 0.5 * (0.5 ** size_index)
+        retention_probability = 0.5 * (0.7 ** size_index)
         print(f"Processing {dataset_name} with size {size_name}, retention_probability={retention_probability:.4f}")
 
         first_batch = True
@@ -95,7 +95,7 @@ for dataset_name in datasets:
 
             crops = utils.split_image_to_patches(
                 img, size, (size[0] // 3, size[1] // 3), gt,
-                max_patch_num=5 if "test" in dataset_name else 50,
+                max_patch_num=2 if "test" in dataset_name else 10,
                 retention_probability=retention_probability
             )
 

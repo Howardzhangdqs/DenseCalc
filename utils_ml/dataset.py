@@ -41,7 +41,7 @@ def size_to_embedding(size: int) -> int:
 class DenseCalcDataset(Dataset):
     def __init__(self, train=True, transform=None, N=None):
         self.transform = config.transform() if transform is None else transform
-        self.dataset = utils.ImageFS(train_dataset_path if train else test_dataset_path)
+        self.dataset = utils.ImageFS(train_dataset_path if train else test_dataset_path, images_per_batch=1)
         self.N = N
 
     def __len__(self):
