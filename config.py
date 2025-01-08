@@ -8,8 +8,8 @@ import utils
 class DefaultConfig:
 
     def __init__(self):
-        self.RAW_DATASET_PATH: str = path.normpath(path.join("/home/jinhao/shanghaitech", "part_B_final"))
-        self.DATASET_PATH: str = "/ssd2/jinhao/densecalc/dataset"
+        self.RAW_DATASET_PATH: str = path.normpath(path.join("/root/autodl-tmp/dataset", "part_B_final"))
+        self.DATASET_PATH: str = "/root/autodl-tmp/processed_dataset"
 
     def transform(self, mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)):
         return transforms.Compose([
