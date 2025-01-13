@@ -83,7 +83,7 @@ for dataset_name in datasets:
     image_fs = utils.ImageFS(output_path, compress=False, images_per_batch=1)
 
     for size_index, (size_name, size) in enumerate(IMG_CROP_SIZES):
-        retention_probability = 0.5 * (0.7 ** size_index)
+        retention_probability = 0.5 * (0.3 ** size_index)
         print(f"Processing {dataset_name} with size {size_name}, retention_probability={retention_probability:.4f}")
 
         first_batch = True

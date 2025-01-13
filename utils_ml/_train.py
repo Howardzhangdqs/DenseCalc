@@ -97,15 +97,8 @@ def validate(
 
         val_loss += loss.item()
 
-        # 将outputs最大值的索引设为1，其余为0
-        # print(outputs[:4], targets[:4])
         outputs = outputs.argmax(dim=1)
         targets = targets.argmax(dim=1)
-
-        # print(outputs[:4], targets[:4])
-
-        # if outputs.eq(targets).sum() == len(targets):
-        #     acc +=
 
         acc += outputs.eq(targets).sum().item()
         total += len(targets)

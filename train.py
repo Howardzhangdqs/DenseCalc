@@ -82,7 +82,7 @@ def main():
         label_num[0] += targets[:, 0].sum().item()
         label_num[1] += targets[:, 1].sum().item()
 
-    label_num = [label_num[0] / sum(label_num), label_num[1] / sum(label_num)]
+    label_num = [label_num[1] / sum(label_num), label_num[0] / sum(label_num)]
 
     print(f"Train data distribution: {label_num}")
 
